@@ -38,6 +38,7 @@ public class ProductController : ControllerBase
             Price = request.Price,
             Stock = request.Stock,
             Likes = request.Likes ? 1 : 0,
+            IsAvailable = request.Stock > 0,
             UpdatedAt = DateTime.UtcNow
         };
 
@@ -75,9 +76,10 @@ public class ProductController : ControllerBase
 
         product.Name = request.Name;
         product.Description = request.Description;
+        product.IsAvailable = (product.Stock+request.Stock) > 0;
         product.Stock = request.Stock;
         product.Price = request.Price;
-        product.Likes = request.Likes ? product.Likes+1 : product.Likes;
+        product.Likes = request.Likes ? product.Likes+1 : product.Likes; 
         product.UpdatedAt = DateTime.UtcNow;
 
         await _db.SaveChangesAsync();
